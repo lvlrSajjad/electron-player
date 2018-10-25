@@ -28,7 +28,7 @@ here you can see some screenshots of app
 
 <img width="50%" src="https://github.com/lvlrSajjad/electron-player/blob/master/screenshots/sc4.JPG?raw=true" /><img width="50%" src="https://github.com/lvlrSajjad/electron-player/blob/master/screenshots/sc5.JPG?raw=true" />
 
-<img width="50%" src="https://github.com/lvlrSajjad/electron-player/blob/master/screenshots/sc6.JPG?raw=true" /><img width="50%" src="https://github.com/lvlrSajjad/electron-player/blob/master/screenshots/sc8.gif?raw=true" /><img width="50%" src="https://github.com/lvlrSajjad/electron-player/blob/master/screenshots/sc7.JPG?raw=true" />
+<img width="50%" src="https://github.com/lvlrSajjad/electron-player/blob/master/screenshots/sc6.JPG?raw=true" /><img width="50%" src="https://github.com/lvlrSajjad/electron-player/blob/master/screenshots/sc9.gif?raw=true" /><img width="50%" src="https://github.com/lvlrSajjad/electron-player/blob/master/screenshots/sc7.JPG?raw=true" />
 
 ## Download
 soon
