@@ -191,9 +191,11 @@ export default class Home extends Component<Props> {
             <video
               style={{
                 boxShadow: '1px 1px 1px 1px rgba(0,0,0,0.2)',
+                backgroundColor: '#000',
                 width: '95%',
                 borderRadius: 8,
-                overflow: 'hidden'
+                overflow: 'hidden',
+                maxHeight: '70%'
               }}
               autoPlay
               controls
