@@ -22,11 +22,15 @@ A Movie Player For Desktop based on  <a href="http://electron.atom.io/">Electron
 ## Screenshots
 
 here you can see some screenshots of app
-<img src="https://github.com/lvlrsajjad/electron-player/screenshots/sc1.png" />
-<img src="https://github.com/lvlrsajjad/electron-player/screenshots/sc2.jpg" />
-<img src="https://github.com/lvlrsajjad/electron-player/screenshots/sc3.jpg" />
-<img src="https://github.com/lvlrsajjad/electron-player/screenshots/sc4.jpg" />
-<img src="https://github.com/lvlrsajjad/electron-player/screenshots/sc5.jpg" />
+<img style="width=100%" src="https://github.com/lvlrSajjad/electron-player/blob/master/screenshots/sc1.png?raw=true" />
+<img style="width=50%" src="https://github.com/lvlrSajjad/electron-player/blob/master/screenshots/sc2.JPG?raw=true" />
+<img style="width=50%" src="https://github.com/lvlrSajjad/electron-player/blob/master/screenshots/sc3.JPGraw=true" />
+<img style="width=50%" src="https://github.com/lvlrSajjad/electron-player/blob/master/screenshots/sc4.JPG?raw=true" />
+<img style="width=50%" src="https://github.com/lvlrSajjad/electron-player/blob/master/screenshots/sc5.JPG?raw=true" />
+<img style="width=50%" src="https://github.com/lvlrSajjad/electron-player/blob/master/screenshots/sc6.JPG?raw=true" />
+<img style="width=50%" src="https://github.com/lvlrSajjad/electron-player/blob/master/screenshots/sc8.gif?raw=true" />
+<img style="width=50%" src="https://github.com/lvlrSajjad/electron-player/blob/master/screenshots/sc7.JPG?raw=true" />
+
 ## Download
 soon
 ### Develop
