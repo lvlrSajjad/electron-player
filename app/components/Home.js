@@ -159,8 +159,6 @@ export default class Home extends Component<Props> {
   }
 
   render() {
-
-
     return (
       <div>
         <Toolbar
@@ -220,8 +218,12 @@ export default class Home extends Component<Props> {
             </video>
             }
             {this.state.files.length > 0 &&
-            <FileList fileOpened={() => this.setState({ currentVideo: '' })} playFile={this.playFile}
-                      directory={this.state.currentDirectoryPath} files={this.state.files}/>}
+            <FileList
+              fileOpened={() => this.setState({ currentVideo: '' })}
+              playFile={this.playFile}
+              directory={this.state.currentDirectoryPath}
+              files={this.state.files}/>
+            }
           </div>
         </div>
       </div>
