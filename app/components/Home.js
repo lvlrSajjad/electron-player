@@ -38,12 +38,26 @@ export default class Home extends Component<Props> {
     this.scanFiles = this.scanFiles.bind(this);
     this.openFileDialog = this.openFileDialog.bind(this);
     this.openWithHandler = this.openWithHandler.bind(this);
+    this.eventListeners = this.eventListeners.bind(this);
+    this.openWithEventListener = this.openWithEventListener.bind(this);
+    this.dropEventListener = this.dropEventListener.bind(this);
+    this.eventListeners();
+  }
 
+  eventListeners() {
+    this.dropEventListener();
+    this.openWithEventListener();
+  }
+
+  dropEventListener() {
     document.body.ondrop = (ev) => {
       const filePath = ev.dataTransfer.files[0].path;
       this.openWithHandler(filePath);
       ev.preventDefault();
     };
+  }
+
+  openWithEventListener() {
     try {
       const electron = require('electron');
       const app = electron.remote;
@@ -52,12 +66,12 @@ export default class Home extends Component<Props> {
         this.openWithHandler(filePath);
       }
     } catch (e) {
-      console.log(e)
+      console.log(e);
     }
   }
 
 
-  openWithHandler(filePath){
+  openWithHandler(filePath) {
     const filePathStr = filePath.toString().toLowerCase();
     console.log(filePathStr);
     if (filePathStr.endsWith('mp4') || filePathStr.endsWith('mkv')) {
@@ -153,9 +167,7 @@ export default class Home extends Component<Props> {
           menu={() => {
             this.setState({ showMenu: !this.state.showMenu });
           }}
-         status={this.state.currentDirectoryName}
-
-
+          status={this.state.currentDirectoryName}
         />
         <div className={styles.container} data-tid="container">
           {this.state.showMenu &&
