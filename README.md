@@ -31,7 +31,8 @@ here you can see some screenshots of app
 <img width="50%" src="https://github.com/lvlrSajjad/electron-player/blob/master/screenshots/sc6.JPG?raw=true" />
 
 ## Download
-soon
+<!-- Place this tag where you want the button to render. -->
+<a class="github-button" href="http://lvlrsajjad.github.io/Electron%20Player%20Setup%200.16.0.exe" data-icon="octicon-cloud-download" aria-label="Download ntkme/github-buttons on GitHub">Download</a>
 ### Develop
 <ol>
 <li>clone the repository</li>
