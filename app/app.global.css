@@ -96,7 +96,7 @@ a:hover {
 
 .cntr {
   display: table;
-  height: 100%;
+  flex:1;
   width: 100%;
 }
 .cntr .cntr-innr {

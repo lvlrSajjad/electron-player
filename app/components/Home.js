@@ -9,6 +9,7 @@ import Plyr from 'plyr';
 import MovieInfo from './MovieInfoModal';
 import Player from './Player';
 import ActionsMenu from './ActionsMenu';
+import storage from 'electron-json-storage';
 
 type Props = {};
 
@@ -30,6 +31,7 @@ export default class Home extends Component<Props> {
       currentDirectoryName: '',
       showMenu: true,
       modalIsOpen: false,
+      haveDefaultFolder:false,
       currentInfo: {
         Title: '',
         Director: '',
@@ -52,7 +54,11 @@ export default class Home extends Component<Props> {
     this.closeModal = util.closeModal.bind(this);
     this.refresh = util.refresh.bind(this);
     this.changeSubtitle = util.changeSubtitle.bind(this);
+    this.setDefaultFolder = util.setDefaultFolder.bind(this);
     this.eventListeners();
+    util.loadDefaultFolder(this);
+
+
   }
 
   render() {
@@ -72,6 +78,9 @@ export default class Home extends Component<Props> {
                        onSearchInput={(t) => this.search(t.target.value)}
                        currentVideo={this.state.currentVideo}
                        changeSubtitle={this.changeSubtitle}
+                       setAsDefault={this.setDefaultFolder}
+                       haveDefaultFolder={this.state.haveDefaultFolder}
+                       removeDefaultFolder={()=>util.removeDefaultFolder(this)}
                        files={this.state.filesOrg}/>
           }
           <div className='playList' style={{

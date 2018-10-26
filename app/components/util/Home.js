@@ -2,6 +2,7 @@ import axios from 'axios/index';
 import fs from 'fs';
 import recursive from 'recursive-readdir';
 import srt2vtt from 'srt-to-vtt';
+import storage from 'electron-json-storage';
 
 export function openModal(title,context) {
   axios.get('http://www.omdbapi.com/?t='+title.replace(' ','+')+'&apikey=b7fd46c5')
@@ -35,6 +36,34 @@ export function changeSubtitle() {
         })
       );
   });
+}
+
+export function loadDefaultFolder(ctx) {
+  storage.get('settings', function(error, data) {
+    if (error) throw error;
+    console.log(data)
+    if (data.defaultFolder !== undefined && data.defaultFolder !== null) {
+      ctx.setState({haveDefaultFolder:true});
+      ctx.scanFiles(data.defaultFolder);
+    } else {
+      ctx.setState({haveDefaultFolder:false});
+    }
+  });
+}
+
+export function removeDefaultFolder(ctx) {
+  storage.remove('settings', function(error) {
+    if (error) throw error;
+    ctx.setState({haveDefaultFolder:false});
+  });
+}
+
+export function setDefaultFolder() {
+  const storage = require('electron-json-storage');
+  this.setState({haveDefaultFolder:true});
+
+// Write
+  storage.set('settings', { defaultFolder: this.state.currentDirectoryPath });
 }
 
 export function afterOpenModal() {
