@@ -14,6 +14,12 @@ export default function ActionsMenu(props) {
           File </a>
         <i className="fa fa-film fa-1x no-drag"/>
       </li>
+      { props.currentVideo.length > 0 &&
+      <li>
+        <a style={{ position: 'absolute', left: 16, fontSize: 16 }} onClick={props.changeSubtitle}> Change Subtitle </a>
+        <i className="fa fa-closed-captioning fa-1x no-drag"/>
+      </li>
+      }
     </ul>
     {props.files.length > 0 &&
     <SearchForm

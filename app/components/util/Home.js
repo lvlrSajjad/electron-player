@@ -15,6 +15,28 @@ export function openModal(title,context) {
     })
 }
 
+export function changeSubtitle() {
+  const { remote } = require('electron');
+  remote.dialog.showOpenDialog({
+    filters: [
+      { name: 'Subtitles', extensions: ['srt'] }
+    ],
+    properties: ['openFile']
+  }, (filePath) => {
+    if (filePath === undefined) {
+      console.log('No file selected');
+      return;
+    }
+    fs.createReadStream(filePath.toString())
+      .pipe(srt2vtt())
+      .pipe(fs.createWriteStream(filePath.toString().replace(/.{3}$/, 'vtt'))
+        .on('finish', () => {
+          this.setState({currentSub: filePath.toString().replace(/.{3}$/, 'vtt') });
+        })
+      );
+  });
+}
+
 export function afterOpenModal() {
   // references are now sync'd and can be accessed.
   this.subtitle.style.color = '#f00';

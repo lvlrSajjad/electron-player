@@ -2,6 +2,10 @@ import React from 'react';
 import ReactPlayer from 'react-player';
 
 export default function Player(props) {
+
+  const tracks = [
+    {kind: 'subtitles', src: props.currentSub, srcLang: 'fa', default: true}
+  ];
   return (
     <ReactPlayer
       controls
@@ -17,11 +21,8 @@ export default function Player(props) {
         { src: props.currentVideo, type: 'video/mp4' }
       ]}
       config={{ file: {
-          tracks: [
-            {kind: 'subtitles', src: props.currentSub, srcLang: 'fa', default: true}
-          ]
+          tracks:tracks
         }}}
-
     />
   );
 }

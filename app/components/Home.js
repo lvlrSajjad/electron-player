@@ -51,6 +51,7 @@ export default class Home extends Component<Props> {
     this.afterOpenModal = util.afterOpenModal.bind(this);
     this.closeModal = util.closeModal.bind(this);
     this.refresh = util.refresh.bind(this);
+    this.changeSubtitle = util.changeSubtitle.bind(this);
     this.eventListeners();
   }
 
@@ -69,6 +70,8 @@ export default class Home extends Component<Props> {
           <ActionsMenu browseFolder={this.listFiles}
                        openFile={this.openFileDialog}
                        onSearchInput={(t) => this.search(t.target.value)}
+                       currentVideo={this.state.currentVideo}
+                       changeSubtitle={this.changeSubtitle}
                        files={this.state.filesOrg}/>
           }
           <div className='playList' style={{
