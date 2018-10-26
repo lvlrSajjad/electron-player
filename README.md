@@ -16,6 +16,7 @@ A Movie Player For Desktop based on  <a href="http://electron.atom.io/">Electron
 <li>Play the video just by one click on the list item in small size for preview</li>
 <li>Play full screen also</li>
 <li>Search Quickly Between thousands of file</li>
+<li>You can see Full Info of movie by just clicking on info icon on the list</li>
 <li>Can show the list of folder's files / play the file just by drag/drop , normal selection window , from context menu</li>
 </ol>
 
