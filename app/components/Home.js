@@ -73,7 +73,6 @@ export default class Home extends Component<Props> {
 
   openWithHandler(filePath) {
     const filePathStr = filePath.toString().toLowerCase();
-    console.log(filePathStr);
     if (filePathStr.endsWith('mp4') || filePathStr.endsWith('mkv')) {
       const filePathObj = filePathStr.toString().split('\\');
       const folderPath = `${filePathObj.slice(0, filePathObj.length - 1).join('\\')  }\\`;
@@ -105,12 +104,12 @@ export default class Home extends Component<Props> {
     const { remote } = require('electron');
     remote.dialog.showOpenDialog({
       properties: ['openDirectory']
-    }, (filePath) => {
-      if (filePath === undefined) {
+    }, (folderPath) => {
+      if (folderPath === undefined) {
         console.log('No file selected');
         return;
       }
-      this.scanFiles(filePath);
+      this.scanFiles(folderPath);
     });
   };
 
