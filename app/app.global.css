@@ -197,3 +197,22 @@ a:hover {
   height: 32px;
   border-radius: 16px;
 }
+.player-wrapper {
+  position: relative;
+  padding-top: 56.25%; /* Player ratio: 100 / (1280 / 720) */
+
+}
+
+.react-player {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.player {
+  width: 95%!important;
+  max-height: 70%!important;
+  height: unset!important;
+
+}

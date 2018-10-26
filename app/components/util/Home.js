@@ -80,6 +80,23 @@ export function playFile(file) {
   });
 }
 
+export function refresh() {
+  this.setState({
+    filesOrg: [],
+    files: [],
+    currentDirectoryPath: '',
+    currentVideo: '',
+    currentDirectoryName: '',
+    currentInfo: {
+      Title: '',
+      Director: '',
+      Year: '',
+      Genre: '',
+      Actors: ''
+    }
+  });
+}
+
 export function listFiles() {
   const { remote } = require('electron');
   remote.dialog.showOpenDialog({
