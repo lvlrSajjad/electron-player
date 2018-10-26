@@ -1,5 +1,6 @@
 import React from 'react';
 import Toolbar from './Toolbar';
+const { shell } = require('electron');
 
 export default function FileList(props) {
   const listItems = props.files.map((file) => {
@@ -8,7 +9,7 @@ export default function FileList(props) {
 
       if (videoExts.includes(fileExt)) {
         return <li style={{ textAlign: 'left', margin: 8 }}>
-          <i style={{marginRight:16}} className="fa fa-info fa-1x no-drag" onClick={()=>props.onInfoClicked(fileNameCorrector(file,fileExt)[0])}/>
+          <a style={{fontSize:16,marginRight:16}} className="fa fa-info fa-1x no-drag" onClick={()=>props.onInfoClicked(fileNameCorrector(file,fileExt)[0])}/>
 
           <a style={{ fontSize: 16 }}
              onDoubleClick={() => {
@@ -19,6 +20,7 @@ export default function FileList(props) {
           >
             {fileNameCorrector(file,fileExt)}
           </a>
+          <a style={{marginRight:16,fontSize:16}} className="fa fa-folder-open fa-1x no-drag" onClick={()=>shell.showItemInFolder(file)}/>
 
         </li>;
       }
