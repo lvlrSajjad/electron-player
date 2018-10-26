@@ -8,10 +8,10 @@ import * as winShell from './win-shell'
 
 const store = configureStore();
 
-winShell.fileContextMenu.register();
-winShell.fileHandler.register();
-winShell.folderBackgroundContextMenu.register();
-winShell.folderContextMenu.register();
+// winShell.fileContextMenu.register();
+// winShell.fileHandler.register();
+// winShell.folderBackgroundContextMenu.register();
+// winShell.folderContextMenu.register();
 
 render(
   <AppContainer>

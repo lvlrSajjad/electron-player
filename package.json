@@ -243,6 +243,7 @@
     "electron-debug": "^2.0.0",
     "history": "^4.7.2",
     "node-tsv-json": "^0.2.1",
+    "plyr": "^3.4.6",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
     "react-hot-loader": "^4.3.4",
@@ -258,6 +259,7 @@
     "redux-thunk": "^2.3.0",
     "source-map-support": "^0.5.6",
     "tabson": "0.0.1",
+    "video.js": "^7.2.3",
     "winreg": "^1.2.4"
   },
   "devEngines": {
