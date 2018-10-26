@@ -238,6 +238,7 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.2.0",
+    "axios": "^0.18.0",
     "devtron": "^1.4.0",
     "electron-debug": "^2.0.0",
     "history": "^4.7.2",
@@ -246,6 +247,7 @@
     "react-dom": "^16.4.1",
     "react-hot-loader": "^4.3.4",
     "react-icons": "^3.2.1",
+    "react-modal": "^3.6.1",
     "react-plyr": "^2.1.1",
     "react-redux": "^5.0.7",
     "react-router": "^4.3.1",

@@ -67,7 +67,10 @@ app.on('ready', async () => {
     vibrancy: 'dark',
     frame: false,
     transparent:true,
-    hasShadow: true
+    hasShadow: true,
+    webPreferences: {
+      experimentalFeatures: true
+    }
   });
 
   mainWindow.loadURL(`file://${__dirname}/app.html`);

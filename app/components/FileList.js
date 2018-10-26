@@ -1,4 +1,5 @@
 import React from 'react';
+import Toolbar from './Toolbar';
 
 export default function FileList(props) {
   const listItems = props.files.map((file) => {
@@ -7,6 +8,8 @@ export default function FileList(props) {
 
       if (videoExts.includes(fileExt)) {
         return <li style={{ textAlign: 'left', margin: 8 }}>
+          <i style={{marginRight:16}} className="fa fa-info fa-1x no-drag" onClick={()=>props.onInfoClicked(fileNameCorrector(file,fileExt)[0])}/>
+
           <a style={{ fontSize: 16 }}
              onDoubleClick={() => {
                openFile(file);
@@ -16,6 +19,7 @@ export default function FileList(props) {
           >
             {fileNameCorrector(file,fileExt)}
           </a>
+
         </li>;
       }
     }

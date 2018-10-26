@@ -156,3 +156,44 @@ a:hover {
   animation: slide 0.5s forwards;
   animation-delay: 2s;
 }
+
+.blurredOverlay {
+  z-index: 999;
+  position: absolute;
+  display:flex;
+  flex-direction: row;
+  left: -8px;
+  top: -8px;
+  right: -8px;
+  bottom: -0px;
+  background-color: rgba(0, 0, 0, 0.7);
+  font-size: 50px;
+  text-align: center;
+  line-height: 100px;
+  backdrop-filter: blur(8px);
+}
+.infoTitle{
+  font-size: 32px;
+  margin:16px;
+}
+.infoHeader{
+  font-size: 24px;
+  margin:16px;
+  height:64px;
+}
+.infoData{
+  font-size: 15px;
+  height:32px;
+}
+
+.infoRow {
+  height:64px;
+  text-align: left;
+}
+
+.ratingContainer{
+  background-color: white;
+  width:32px;
+  height: 32px;
+  border-radius: 16px;
+}

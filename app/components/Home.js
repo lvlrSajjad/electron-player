@@ -7,10 +7,11 @@ import FileList from './FileList';
 import DragDropView from './DragDropView';
 import SearchForm from './SearchForm';
 import Toolbar from './Toolbar';
+import Modal from 'react-modal';
+import axios from 'axios';
 
 const srt2vtt = require('srt-to-vtt');
 const { shell } = require('electron');
-
 type Props = {};
 
 document.ondragover = document.ondrop = (ev) => {
@@ -30,7 +31,15 @@ export default class Home extends Component<Props> {
       currentDirectoryPath: '',
       currentVideo: '',
       currentDirectoryName: '',
-      showMenu: true
+      showMenu: true,
+      modalIsOpen: false,
+      currentInfo:{
+        Title:'',
+        Director:'',
+        Year:'',
+        Genre:'',
+        Actors:''
+      }
     };
     this.listFiles = this.listFiles.bind(this);
     this.playFile = this.playFile.bind(this);
@@ -41,7 +50,33 @@ export default class Home extends Component<Props> {
     this.eventListeners = this.eventListeners.bind(this);
     this.openWithEventListener = this.openWithEventListener.bind(this);
     this.dropEventListener = this.dropEventListener.bind(this);
+
+    this.openModal = this.openModal.bind(this);
+    this.afterOpenModal = this.afterOpenModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
+
     this.eventListeners();
+  }
+
+  openModal(title,context) {
+    axios.get('http://www.omdbapi.com/?t='+title.replace(' ','+')+'&apikey=b7fd46c5')
+      .then(function (response) {
+        // handle success
+        context.setState({currentInfo:response.data,modalIsOpen: true})
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error);
+      })
+  }
+
+  afterOpenModal() {
+    // references are now sync'd and can be accessed.
+    this.subtitle.style.color = '#f00';
+  }
+
+  closeModal() {
+    this.setState({modalIsOpen: false});
   }
 
   eventListeners() {
@@ -160,6 +195,7 @@ export default class Home extends Component<Props> {
   render() {
     return (
       <div>
+
         <Toolbar
           menu={() => {
             this.setState({ showMenu: !this.state.showMenu });
@@ -221,10 +257,67 @@ export default class Home extends Component<Props> {
               fileOpened={() => this.setState({ currentVideo: '' })}
               playFile={this.playFile}
               directory={this.state.currentDirectoryPath}
-              files={this.state.files}/>
+              files={this.state.files}
+              onInfoClicked={(title)=>this.openModal(title,this)}
+            />
             }
           </div>
         </div>
+        {this.state.modalIsOpen &&
+        <div style={{alignItems:'center',justifyContent:'center'}} onClick={()=>this.closeModal()} className='blurredOverlay'>
+          <div>
+          <img style={{borderRadius:8}} src={this.state.currentInfo.Poster}/>
+          </div>
+          <div>
+          <ul>
+            <li className='infoRow'>
+            <h6 className='infoTitle'>{this.state.currentInfo.Title}</h6>
+          </li>
+            <li >
+
+            </li>
+            <li className='infoRow'>
+          <b className='infoHeader'>Released</b>
+              <b className='infoData'>
+                {this.state.currentInfo.Released}</b>
+          </li>
+            <li className='infoRow'>
+          <b className='infoHeader'>Genre</b>
+
+              <b className='infoData'>
+          {this.state.currentInfo.Genre}
+              </b>
+            </li>
+            <li className='infoRow'>
+          <b className='infoHeader'>Director</b>
+
+              <b className='infoData'>
+          {this.state.currentInfo.Director}
+              </b>
+            </li>
+            <li className='infoRow'>
+          <b className='infoHeader'>Actors</b>
+
+              <b className='infoData'>{this.state.currentInfo.Actors}</b>
+            </li>
+            <li className='infoRow'>
+            <b className='infoHeader'>IMDB</b>
+
+            <b className='infoData'>{this.state.currentInfo.imdbRating}</b>
+
+            <b className='infoHeader'>Meta</b>
+
+            <b className='infoData'>{this.state.currentInfo.Metascore}</b>
+            </li>
+            <li className='infoRow'>
+              <b className='infoHeader'>Awards</b>
+              <b className='infoData'>{this.state.currentInfo.Awards}</b>
+            </li>
+          </ul>
+          </div>
+
+        </div>
+        }
       </div>
     );
   }
