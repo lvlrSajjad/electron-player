@@ -28,7 +28,7 @@ here you can see some screenshots of app
 
 <img width="50%" src="https://github.com/lvlrSajjad/electron-player/blob/master/screenshots/sc4.JPG?raw=true" /><img width="50%" src="https://github.com/lvlrSajjad/electron-player/blob/master/screenshots/sc5.JPG?raw=true" />
 
-<img width="50%" src="https://github.com/lvlrSajjad/electron-player/blob/master/screenshots/sc6.JPG?raw=true" />
+<img width="50%" src="https://github.com/lvlrSajjad/electron-player/blob/master/screenshots/sc10.JPG?raw=true" /><img width="50%" src="https://github.com/lvlrSajjad/electron-player/blob/master/screenshots/sc6.JPG?raw=true" />
 
 ## Download
 <!-- Place this tag where you want the button to render. -->
