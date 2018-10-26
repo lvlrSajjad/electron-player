@@ -7,7 +7,7 @@ export default function MovieInfo(props) {
       <a onClick={()=>{
         const { shell } = require('electron')
 
-        shell.openExternal('https://subf2m.co/subtitles/'+props.title.replace(' ','-'))
+        shell.openExternal('https://subf2m.co/subtitles/'+props.title.replace(/ /gi,'-').toLowerCase())
 
       }} style={{display:'flex',color:'black',fontStyle:'bold',fontSize:16,width:'100%',height:32,margin:0,backgroundColor:'#FFA000',borderRadius:4, alignItems:'center',justifyContent:'center'}} >
         Subtitles
