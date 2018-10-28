@@ -61,6 +61,19 @@ export default class Home extends Component<Props> {
 
   }
 
+  myFunction(message) {
+    // Get the snackbar DIV
+    this.setState({message:message});
+    var x = document.getElementById("snackbar");
+
+    // Add the "show" class to DIV
+    x.className = "show";
+
+    // After 3 seconds, remove the show class from DIV
+    setTimeout(function(){ x.className = x.className.replace("show", ""); }, 2000);
+  }
+
+
   render() {
     return (
       <div>
@@ -93,7 +106,9 @@ export default class Home extends Component<Props> {
             }
             {this.state.currentVideo.length > 0 &&
             <Player currentVideo={this.state.currentVideo}
-                    currentSub={this.state.currentSub}/>
+                    currentSub={this.state.currentSub}
+                    onMessage={(msg)=>this.myFunction(msg)}
+            />
             }
             {this.state.files.length > 0 &&
             <FileList fileOpened={() => this.setState({ currentVideo: '' })}
@@ -116,6 +131,9 @@ export default class Home extends Component<Props> {
                    awards={this.state.currentInfo.Awards}
                    closeModal={() => this.closeModal()}/>
         }
+
+        <div id="snackbar">{this.state.message}</div>
+
       </div>
     );
   }
