@@ -18,6 +18,8 @@ A Movie Player For Desktop based on  <a href="http://electron.atom.io/">Electron
 <li>Search Quickly Between thousands of file</li>
 <li>You can see Full Info of movie by just clicking on info icon on the list</li>
 <li>Can show the list of folder's files / play the file just by drag/drop , normal selection window , from context menu</li>
+<li>Playeback Controls with arrow keys (left and right arrow for forward and backward , up and down keys for volume controls , space for pause play toggle)</li>
+<li>You can set default folder for every time opening app the folder content will show up on the list</li>
 </ol>
 
 ## Screenshots
