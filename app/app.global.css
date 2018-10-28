@@ -212,8 +212,8 @@ a:hover {
 
 .player {
   width: 95%!important;
-  max-height: 70%!important;
-  height: unset!important;
+  max-height: 60%!important;
+  height: 60%!important;
 
 }
 
