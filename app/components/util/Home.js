@@ -4,16 +4,16 @@ import recursive from 'recursive-readdir';
 import srt2vtt from 'srt-to-vtt';
 import storage from 'electron-json-storage';
 
-export function openModal(title,context) {
-  axios.get('http://www.omdbapi.com/?t='+title.replace(' ','+')+'&apikey=b7fd46c5')
-    .then(function (response) {
+export function openModal(title, context) {
+  axios.get('http://www.omdbapi.com/?t=' + title.replace(' ', '+') + '&apikey=b7fd46c5')
+    .then(function(response) {
       // handle success
-      context.setState({currentInfo:response.data,modalIsOpen: true})
+      context.setState({ currentInfo: response.data, modalIsOpen: true });
     })
-    .catch(function (error) {
+    .catch(function(error) {
       // handle error
       console.log(error);
-    })
+    });
 }
 
 export function changeSubtitle() {
@@ -32,7 +32,7 @@ export function changeSubtitle() {
       .pipe(srt2vtt())
       .pipe(fs.createWriteStream(filePath.toString().replace(/.{3}$/, 'vtt'))
         .on('finish', () => {
-          this.setState({currentSub: filePath.toString().replace(/.{3}$/, 'vtt') });
+          this.setState({ currentSub: filePath.toString().replace(/.{3}$/, 'vtt') });
         })
       );
   });
@@ -41,12 +41,12 @@ export function changeSubtitle() {
 export function loadDefaultFolder(ctx) {
   storage.get('settings', function(error, data) {
     if (error) throw error;
-    console.log(data)
+    console.log(data);
     if (data.defaultFolder !== undefined && data.defaultFolder !== null) {
-      ctx.setState({haveDefaultFolder:true});
+      ctx.setState({ haveDefaultFolder: true });
       ctx.scanFiles(data.defaultFolder);
     } else {
-      ctx.setState({haveDefaultFolder:false});
+      ctx.setState({ haveDefaultFolder: false });
     }
   });
 }
@@ -54,13 +54,13 @@ export function loadDefaultFolder(ctx) {
 export function removeDefaultFolder(ctx) {
   storage.remove('settings', function(error) {
     if (error) throw error;
-    ctx.setState({haveDefaultFolder:false});
+    ctx.setState({ haveDefaultFolder: false });
   });
 }
 
 export function setDefaultFolder() {
   const storage = require('electron-json-storage');
-  this.setState({haveDefaultFolder:true});
+  this.setState({ haveDefaultFolder: true });
 
 // Write
   storage.set('settings', { defaultFolder: this.state.currentDirectoryPath });
@@ -72,7 +72,7 @@ export function afterOpenModal() {
 }
 
 export function closeModal() {
-  this.setState({modalIsOpen: false});
+  this.setState({ modalIsOpen: false });
 }
 
 export function eventListeners() {
@@ -182,25 +182,52 @@ export function openFileDialog() {
 };
 
 export function search(text) {
-  console.log(text);
-  const fileList = this.state.filesOrg;
-  const result = fileList.filter((file) => file.toLowerCase().indexOf(text.toLowerCase()) >= 0
+  const fileList = this.state.mappedFilesOrg;
+  const result = fileList.filter((file) => file.path.toLowerCase().indexOf(text.toLowerCase()) >= 0
   );
-  console.log(result);
-  this.setState({ files: result });
+  this.setState({ mappedFiles: result });
 }
 
 export function scanFiles(filePath) {
   const dirNameObj = filePath.toString().split('\\');
   const dirName = dirNameObj[dirNameObj.length - 1];
   recursive(filePath.toString(), ['*.MP4', '*.MKV'], (err, items) => {
+    const mappedArray = items.map(x => {
+      const ext = x.substr(x.length - 3);
+      const nameObj = fileNameCorrector(x, ext);
+        return {
+          name: nameObj,
+          path: x,
+          ext: ext,
+          year: nameObj[1],
+          resolution: x.match(/\d{3,4}p/) !== null ? x.match(/\d{3,4}p/)[0] : ''
+        };
+    });
     if (items !== undefined && items != null) {
       this.setState({
-        filesOrg: items,
-        files: items,
+        mappedFilesOrg: mappedArray,
+        mappedFiles: mappedArray,
         currentDirectoryPath: filePath.toString(),
         currentDirectoryName: dirName
       });
     }
   });
+}
+
+function fileNameCorrector(string, ext) {
+  const stringObj = string.split('\\');
+
+  const fileName = stringObj[stringObj.length - 1];
+
+  return fileName
+    .replace(`.${ext}`, '')
+    .replace(/\(/gi, '')
+    .replace(/\)/gi, '')
+    .replace(/\[/gi, '')
+    .replace(/]/gi, '')
+    .replace(/\./g, ' ')
+    .replace(/_/gi, ' ')
+    .replace(/-/gi, ' ')
+    .split(/(?=([0-9]{4})+)/)
+    .slice(0, 2);
 }

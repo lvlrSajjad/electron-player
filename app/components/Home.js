@@ -13,6 +13,7 @@ import storage from 'electron-json-storage';
 
 type Props = {};
 
+
 document.ondragover = document.ondrop = (ev) => {
   ev.preventDefault();
 };
@@ -24,8 +25,8 @@ export default class Home extends Component<Props> {
   constructor(props) {
     super(props);
     this.state = {
-      filesOrg: [],
-      files: [],
+      mappedFilesOrg: [],
+      mappedFiles: [],
       currentDirectoryPath: '',
       currentVideo: '',
       currentDirectoryName: '',
@@ -94,14 +95,14 @@ export default class Home extends Component<Props> {
                        setAsDefault={this.setDefaultFolder}
                        haveDefaultFolder={this.state.haveDefaultFolder}
                        removeDefaultFolder={()=>util.removeDefaultFolder(this)}
-                       files={this.state.filesOrg}/>
+                       files={this.state.mappedFilesOrg}/>
           }
           <div className='playList' style={{
             flex: 1,
             alignItems: 'center',
             justifyContent: 'center'
           }}>
-            {(this.state.currentVideo.length === 0 && this.state.files.length === 0) &&
+            {(this.state.currentVideo.length === 0 && this.state.mappedFiles.length === 0) &&
             <DragDropView/>
             }
             {this.state.currentVideo.length > 0 &&
@@ -110,11 +111,11 @@ export default class Home extends Component<Props> {
                     onMessage={(msg)=>this.myFunction(msg)}
             />
             }
-            {this.state.files.length > 0 &&
+            {this.state.mappedFiles.length > 0 &&
             <FileList fileOpened={() => this.setState({ currentVideo: '' })}
                       playFile={this.playFile}
                       directory={this.state.currentDirectoryPath}
-                      files={this.state.files}
+                      mappedFiles={this.state.mappedFiles}
                       onInfoClicked={(title) => this.openModal(title, this)}/>
             }
           </div>
