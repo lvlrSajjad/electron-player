@@ -200,7 +200,7 @@ export function scanFiles(filePath) {
       const ext = x.substr(x.length - 3);
       const nameObj = fileNameCorrector(x, ext);
       const result = moviesdb.find(obj => {
-        return obj.title === nameObj[0].trim()
+        return obj.title === nameObj[0].trim() && obj.year === nameObj[1].trim()
       });
         return {
           name: nameObj,
