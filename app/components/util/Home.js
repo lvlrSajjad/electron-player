@@ -230,6 +230,7 @@ function fileNameCorrector(string, ext) {
 
   return fileName
     .replace(`.${ext}`, '')
+    .replace(/([a-z])([A-Z])/g, '$1 $2')
     .replace(/\(/gi, '')
     .replace(/\)/gi, '')
     .replace(/\[/gi, '')
