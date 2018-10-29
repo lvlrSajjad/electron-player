@@ -31,8 +31,12 @@ export default function ActionsMenu(props) {
         <i className="fa fa-star fa-1x no-drag"/>
       </li> }
       {props.haveDefaultFolder &&<li>
-        <a style={{ position: 'absolute', left: 16, fontSize: 16 }} onClick={props.removeDefaultFolder}> Unset Default Folder </a>
-        <i className="fa fa-minus fa-1x no-drag"/>
+      <a style={{ position: 'absolute', left: 16, fontSize: 16 }} onClick={props.removeDefaultFolder}> Unset Default Folder </a>
+      <i className="fa fa-minus fa-1x no-drag"/>
+    </li> }
+      {props.searchTerm.length > 0 &&<li>
+        <a style={{ position: 'absolute', left: 16, fontSize: 16 }} onClick={props.resetSearch}> reset Search </a>
+        <i className="fa fa-redo fa-1x no-drag"/>
       </li> }
     </ul>
 

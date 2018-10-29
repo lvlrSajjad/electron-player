@@ -33,6 +33,7 @@ export default class Home extends Component<Props> {
       showMenu: true,
       modalIsOpen: false,
       haveDefaultFolder:false,
+      searchTerm:'',
       currentInfo: {
         Title: '',
         Director: '',
@@ -95,6 +96,8 @@ export default class Home extends Component<Props> {
                        setAsDefault={this.setDefaultFolder}
                        haveDefaultFolder={this.state.haveDefaultFolder}
                        removeDefaultFolder={()=>util.removeDefaultFolder(this)}
+                       searchTerm={this.state.searchTerm}
+                       resetSearch={()=>this.search('')}
                        files={this.state.mappedFilesOrg}/>
           }
           <div className='playList' style={{
@@ -116,6 +119,7 @@ export default class Home extends Component<Props> {
                       playFile={this.playFile}
                       directory={this.state.currentDirectoryPath}
                       mappedFiles={this.state.mappedFiles}
+                      onGenreClick={(genre)=>{this.search(genre)}}
                       onInfoClicked={(title) => this.openModal(title, this)}/>
             }
           </div>

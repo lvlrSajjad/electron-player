@@ -144,7 +144,8 @@ export function refresh() {
       Year: '',
       Genre: '',
       Actors: ''
-    }
+    },
+    searchTerm: ''
   });
 }
 
@@ -183,24 +184,32 @@ export function openFileDialog() {
 
 export function search(text) {
   const fileList = this.state.mappedFilesOrg;
-  const result = fileList.filter((file) => file.path.toLowerCase().indexOf(text.toLowerCase()) >= 0
+  const result = fileList.filter((file) =>{
+    const searchRes=file.path.toLowerCase()+file.genres.join(' ').toLowerCase()+file.cast.join(' ').toLowerCase();
+    return searchRes.indexOf(text.toLowerCase()) >= 0}
   );
-  this.setState({ mappedFiles: result });
+  this.setState({ mappedFiles: result,searchTerm : text });
 }
 
 export function scanFiles(filePath) {
+  const moviesdb = require('../movies');
   const dirNameObj = filePath.toString().split('\\');
   const dirName = dirNameObj[dirNameObj.length - 1];
   recursive(filePath.toString(), ['*.MP4', '*.MKV'], (err, items) => {
     const mappedArray = items.map(x => {
       const ext = x.substr(x.length - 3);
       const nameObj = fileNameCorrector(x, ext);
+      const result = moviesdb.find(obj => {
+        return obj.title === nameObj[0].trim()
+      });
         return {
           name: nameObj,
           path: x,
           ext: ext,
           year: nameObj[1],
-          resolution: x.match(/\d{3,4}p/) !== null ? x.match(/\d{3,4}p/)[0] : ''
+          resolution: x.match(/\d{3,4}p/) !== null && x.match(/\d{3,4}p/) !== undefined ? x.match(/\d{3,4}p/)[0] : '',
+          cast:[],genres:[],
+          ... result
         };
     });
     if (items !== undefined && items != null) {
