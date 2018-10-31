@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ReactLoading from 'react-loading';
 
 // import FaBeer from 'react-icons/fa/beer';
 

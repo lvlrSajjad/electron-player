@@ -50,3 +50,5 @@ main.js.map
 
 .idea
 npm-debug.log.*
+app/components/movies.json
+app/components/movies.json

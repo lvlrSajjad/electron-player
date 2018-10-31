@@ -3,6 +3,9 @@ import fs from 'fs';
 import recursive from 'recursive-readdir';
 import srt2vtt from 'srt-to-vtt';
 import storage from 'electron-json-storage';
+import Datastore from 'nedb';
+
+const db = new Datastore({ filename: 'movies.db', autoload: true });
 
 export function openModal(title, context) {
   axios.get('http://www.omdbapi.com/?t=' + title.replace(' ', '+') + '&apikey=b7fd46c5')
@@ -43,7 +46,7 @@ export function loadDefaultFolder(ctx) {
     if (error) throw error;
     console.log(data);
     if (data.defaultFolder !== undefined && data.defaultFolder !== null) {
-      ctx.setState({ haveDefaultFolder: true });
+      ctx.setState({ haveDefaultFolder: true, isLoading: true });
       ctx.scanFiles(data.defaultFolder);
     } else {
       ctx.setState({ haveDefaultFolder: false });
@@ -183,47 +186,109 @@ export function openFileDialog() {
 };
 
 export function search(text) {
+  if (!this.state.isDataLoading) {
   const fileList = this.state.mappedFilesOrg;
-  const result = fileList.filter((file) =>{
-    const searchRes=file.path.toLowerCase()+file.genres.join(' ').toLowerCase()+file.cast.join(' ').toLowerCase();
-    return searchRes.indexOf(text.toLowerCase()) >= 0}
+  const result = fileList.filter((file) => {
+      const searchRes = file.path.toLowerCase() +
+        file.genres.join(' ').toLowerCase() +
+        file.cast.join(' ').toLowerCase() +
+        file.director.toLowerCase() +
+        file.rating.toLowerCase();
+      return searchRes.indexOf(text.toLowerCase()) >= 0;
+    }
   );
-  this.setState({ mappedFiles: result,searchTerm : text });
+  this.setState({ mappedFiles: result, searchTerm: text });
+  } else {
+    this.myFunction('Please  Wait Until Data Loading Finishes')
+  }
 }
 
-export function scanFiles(filePath) {
-  const moviesdb = require('../movies');
+function ignoreFunc(file, stats) {
+  const ext = file.substr(file.length - 3).toLowerCase().trim();
+  console.log(ext);
+  console.log(ext !== 'mkv' && ext !== 'mp4');
+  return (ext !== 'mkv' && ext !== 'mp4');
+}
+
+// $where: function () { return Object.keys(this) > 6; }
+export async function scanFiles(filePath) {
   const dirNameObj = filePath.toString().split('\\');
   const dirName = dirNameObj[dirNameObj.length - 1];
-  recursive(filePath.toString(), ['*.MP4', '*.MKV'], (err, items) => {
-    const mappedArray = items.map(x => {
-      const ext = x.substr(x.length - 3);
-      const nameObj = fileNameCorrector(x, ext);
-      const result = moviesdb.find(obj => {
-        if (nameObj[1] !== undefined){
-          return obj.title === nameObj[0].trim() && obj.year.toString() === nameObj[1].trim()
-        } else {
-          return obj.title === nameObj[0].trim()
-        }
+  this.setState({
+    currentDirectoryPath: filePath.toString(),
+    currentDirectoryName: dirName
+  });
+  recursive(filePath.toString(), (err, items) => {
+
+    if (items !== undefined) {
+      items = items.filter(file => {
+        const ext = file.substr(file.length - 3).toLowerCase().trim();
+        return (ext === 'mkv' || ext === 'mp4');
       });
-        return {
-          name: nameObj,
-          path: x,
-          ext: ext,
-          year: nameObj[1],
-          resolution: x.match(/\d{3,4}p/) !== null && x.match(/\d{3,4}p/) !== undefined ? x.match(/\d{3,4}p/)[0] : '',
-          cast:[],genres:[],
-          ... result
-        };
-    });
-    if (items !== undefined && items != null) {
-      this.setState({
-        mappedFilesOrg: mappedArray,
-        mappedFiles: mappedArray,
-        currentDirectoryPath: filePath.toString(),
-        currentDirectoryName: dirName
-      });
+      this.setState({ isLoading: true });
+      firstLoop(items, this);
     }
+  });
+}
+
+export function fetchData() {
+  this.setState({
+    isDataLoading: true
+  });
+  let pLooped = 0;
+
+  let moviesArray = this.state.mappedFilesOrg;
+
+  for (let i = 0, len = moviesArray.length; i < len; i++) {
+    let movie = moviesArray[i];
+    db.findOne(
+      {
+        $where: function() {
+          if (movie.year !== undefined) {
+            return this.title.replace(':', '').replace(/'/, '').replace(/ - /, ' ').replace(/-/, ' ').toLowerCase().includes(movie.name[0].replace(/'/, '').trim().toLowerCase()) && this.year === movie.year.trim();
+          } else {
+            return this.title.replace(':', '').replace(/'/, '').replace(/ - /, ' ').replace(/-/, ' ').toLowerCase().includes(movie.name[0].replace(/'/, '').trim().toLowerCase());
+          }
+        }
+      }, async (err, result) => {
+        moviesArray[i] = {...movie,...result};
+        pLooped++;
+        checkPromise(pLooped, len, this, moviesArray);
+      });
+  }
+}
+
+async function checkPromise(looped, size, ctx, array) {
+  ctx.setState({
+    mappedFilesOrg: array,
+    mappedFiles: array,
+    fetchedPercent: (looped/size)*100
+  });
+  if (looped === size) {
+    ctx.setState({
+      isDataLoading: false
+    });
+  }
+}
+
+async function firstLoop(items, ctx) {
+  for (let i = 0, len = items.length; i < len; i++) {
+    const x = items[i];
+    const ext = x.substr(x.length - 3);
+    const nameObj = fileNameCorrector(x, ext);
+    items[i]= {
+      name: nameObj,
+      path: x,
+      ext: ext,
+      year: nameObj[1],
+      resolution: x.match(/\d{3,4}p/) !== null && x.match(/\d{3,4}p/) !== undefined ? x.match(/\d{3,4}p/)[0] : '',
+      cast: [], genres: [], rating: '', director: ''
+    };
+  }
+  ctx.setState({
+    mappedFilesOrg: items,
+    mappedFiles: items,
+    isLoading: false
   });
 }
 

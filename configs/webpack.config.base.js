@@ -39,6 +39,12 @@ export default {
   module: {
     rules: [
       {
+        // Test for a polyfill (or any file) and it won't be included in your
+        // bundle
+        test: path.resolve(__dirname, 'node_modules/library/polyfill.js'),
+        use: 'null-loader'
+      },
+      {
         test: /\.jsx?$/,
         exclude: /node_modules/,
         use: {
