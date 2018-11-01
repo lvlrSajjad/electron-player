@@ -46,7 +46,7 @@ export function loadDefaultFolder(ctx) {
         ctx.scanFiles(data.defaultFolder);
       });
     } else {
-      ctx.setState({ haveDefaultFolder: false });
+      ctx.setState({ haveDefaultFolder: false, isLoading: false });
     }
   });
 }
@@ -223,6 +223,9 @@ export async function scanFiles(filePath) {
         return (ext === 'mkv' || ext === 'mp4');
       });
       this.setState({ isLoading: true });
+      if (this.state.mappedFilesOrg.length > 0){
+        this.terminateWorker();
+      }
       this.callDbWorker(items);
     }
   });

@@ -53,6 +53,12 @@ export default {
             cacheDirectory: true
           }
         }
+      },{
+        test: /\.worker\.js$/,
+        use: {
+          loader: 'worker-loader',
+          options: { inline: true, fallback: false }
+        }
       }
     ]
   },
@@ -60,7 +66,8 @@ export default {
   output: {
     path: path.join(__dirname, '..', 'app'),
     // https://github.com/webpack/webpack/issues/1114
-    libraryTarget: 'commonjs2'
+    libraryTarget: 'commonjs2',
+    globalObject: 'this'
   },
 
   /**

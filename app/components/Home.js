@@ -9,7 +9,7 @@ import MovieInfo from './MovieInfoModal';
 import Player from './Player';
 import ActionsMenu from './ActionsMenu';
 import ReactLoading from 'react-loading';
-
+import Worker from 'worker-loader!../myWorker.js';
 
 type Props = {};
 
@@ -18,12 +18,11 @@ document.ondragover = document.ondrop = (ev) => {
   ev.preventDefault();
 };
 
-var worker = new Worker("myWorker.js");
-
-
-
+let worker = new Worker();
+worker.postMessage({func:'importNedb'});
 
 export default class Home extends Component<Props> {
+
   props: Props;
 
   constructor(props) {
@@ -68,20 +67,28 @@ export default class Home extends Component<Props> {
     this.eventListeners();
     util.loadDefaultFolder(this);
 
-    worker.addEventListener('message',(e) => {
-      if (e.data.msg === 'scanningFinished'){
-        this.setState(e.data.data)
-      } else if (e.data.msg === 'onPercent') {
-        this.setState(e.data.data)
-      }else if (e.data.msg === 'fetchingFinished') {
-        this.setState(e.data.data)
-      }
-    });
+
   }
 
+  terminateWorker = ()=>{
+    worker.terminate();
+    worker = new Worker();
+    worker.postMessage({func:'importNedb'});
+  };
   callDbWorker = (files)=>{
-    this.setState({isDataLoading:true},()=>{
-      worker.postMessage({func:'firstLoop',files:files})
+   const electron = require('electron');
+   const app = electron.remote.app;
+    this.setState({isDataLoading:true,fetchedPercent:0},()=>{
+      worker.addEventListener('message',(e) => {
+        if (e.data.msg === 'scanningFinished'){
+          this.setState(e.data.data)
+        } else if (e.data.msg === 'onPercent') {
+          this.setState(e.data.data)
+        }else if (e.data.msg === 'fetchingFinished') {
+          this.setState(e.data.data)
+        }
+      });
+      worker.postMessage({func:'firstLoop',files:files,appPath:app.getAppPath('UserData')+'\\movies.db'})
     })
   };
 
