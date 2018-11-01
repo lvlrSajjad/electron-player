@@ -10,12 +10,17 @@ import Player from './Player';
 import ActionsMenu from './ActionsMenu';
 import ReactLoading from 'react-loading';
 
+
 type Props = {};
 
 
 document.ondragover = document.ondrop = (ev) => {
   ev.preventDefault();
 };
+
+var worker = new Worker("myWorker.js");
+
+
 
 
 export default class Home extends Component<Props> {
@@ -33,8 +38,8 @@ export default class Home extends Component<Props> {
       modalIsOpen: false,
       haveDefaultFolder: false,
       isLoading: false,
-      isDataLoading: false,
       showSortModal: false,
+      isDataLoading:true,
       fetchedPercent: 0,
       searchTerm: '',
       currentInfo: {
@@ -60,12 +65,26 @@ export default class Home extends Component<Props> {
     this.refresh = util.refresh.bind(this);
     this.changeSubtitle = util.changeSubtitle.bind(this);
     this.setDefaultFolder = util.setDefaultFolder.bind(this);
-    this.fetchData = util.fetchData.bind(this);
     this.eventListeners();
     util.loadDefaultFolder(this);
 
-
+    worker.addEventListener('message',(e) => {
+      if (e.data.msg === 'scanningFinished'){
+        this.setState(e.data.data)
+      } else if (e.data.msg === 'onPercent') {
+        this.setState(e.data.data)
+      }else if (e.data.msg === 'fetchingFinished') {
+        this.setState(e.data.data)
+      }
+    });
   }
+
+  callDbWorker = (files)=>{
+    this.setState({isDataLoading:true},()=>{
+      worker.postMessage({func:'firstLoop',files:files})
+    })
+  };
+
 
   myFunction(message) {
     // Get the snackbar DIV
@@ -108,9 +127,6 @@ export default class Home extends Component<Props> {
                        searchTerm={this.state.searchTerm}
                        resetSearch={() => this.search('')}
                        isDataLoading={this.state.isDataLoading}
-                       fetchData={() => {
-                         this.fetchData();
-                       }}
                        sortDialog={() => {
                          this.setState({ showSortModal: true });
                        }}
@@ -205,6 +221,9 @@ export default class Home extends Component<Props> {
     );
   }
 
+  run =(fn) => {
+    return new Worker(URL.createObjectURL(new Blob(['('+fn+')()'])));
+  };
   sortArray = (param) => {
     let unsortedArray = this.state.mappedFiles;
     if (param === 'name') {

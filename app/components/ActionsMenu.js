@@ -22,16 +22,6 @@ export default function ActionsMenu(props) {
         <i className="fa fa-film fa-1x no-drag"/>
       </li>
       {props.files.length > 0 && <li>
-      <a style={{ position: 'absolute', left: 16, fontSize: 16 }} onClick={props.fetchData}> Fetch Data </a>
-
-
-      {(props.isDataLoading) ?
-        <ReactLoading className="fa" type='bars' color='#fafafa' height={16} width={16}/> :
-        <i className="fa fa-database fa-1x no-drag"/>
-      }
-
-    </li>}
-      {props.files.length > 0 && <li>
         <a style={{ position: 'absolute', left: 16, fontSize: 16 }} onClick={props.sortDialog}> Sort Movies </a>
           <i className="fa fa-sort fa-1x no-drag"/>
       </li>}

@@ -3,9 +3,6 @@ import fs from 'fs';
 import recursive from 'recursive-readdir';
 import srt2vtt from 'srt-to-vtt';
 import storage from 'electron-json-storage';
-import Datastore from 'nedb';
-
-const db = new Datastore({ filename: 'movies.db', autoload: true });
 
 export function openModal(title, context) {
   axios.get('http://www.omdbapi.com/?t=' + title.replace(' ', '+') + '&apikey=b7fd46c5')
@@ -44,10 +41,10 @@ export function changeSubtitle() {
 export function loadDefaultFolder(ctx) {
   storage.get('settings', function(error, data) {
     if (error) throw error;
-    console.log(data);
     if (data.defaultFolder !== undefined && data.defaultFolder !== null) {
-      ctx.setState({ haveDefaultFolder: true, isLoading: true });
-      ctx.scanFiles(data.defaultFolder);
+      ctx.setState({ haveDefaultFolder: true, isLoading: true }, () => {
+        ctx.scanFiles(data.defaultFolder);
+      });
     } else {
       ctx.setState({ haveDefaultFolder: false });
     }
@@ -187,19 +184,19 @@ export function openFileDialog() {
 
 export function search(text) {
   if (!this.state.isDataLoading) {
-  const fileList = this.state.mappedFilesOrg;
-  const result = fileList.filter((file) => {
-      const searchRes = file.path.toLowerCase() +
-        file.genres.join(' ').toLowerCase() +
-        file.cast.join(' ').toLowerCase() +
-        file.director.toLowerCase() +
-        file.rating.toLowerCase();
-      return searchRes.indexOf(text.toLowerCase()) >= 0;
-    }
-  );
-  this.setState({ mappedFiles: result, searchTerm: text });
+    const fileList = this.state.mappedFilesOrg;
+    const result = fileList.filter((file) => {
+        const searchRes = file.path.toLowerCase() +
+          file.genres.join(' ').toLowerCase() +
+          file.cast.join(' ').toLowerCase() +
+          file.director.toLowerCase() +
+          file.rating.toLowerCase();
+        return searchRes.indexOf(text.toLowerCase()) >= 0;
+      }
+    );
+    this.setState({ mappedFiles: result, searchTerm: text });
   } else {
-    this.myFunction('Please  Wait Until Data Loading Finishes')
+    this.myFunction('Please  Wait Until Data Loading Finishes');
   }
 }
 
@@ -226,87 +223,7 @@ export async function scanFiles(filePath) {
         return (ext === 'mkv' || ext === 'mp4');
       });
       this.setState({ isLoading: true });
-      firstLoop(items, this);
+      this.callDbWorker(items);
     }
   });
-}
-
-export function fetchData() {
-  this.setState({
-    isDataLoading: true
-  });
-  let pLooped = 0;
-
-  let moviesArray = this.state.mappedFilesOrg;
-
-  for (let i = 0, len = moviesArray.length; i < len; i++) {
-    let movie = moviesArray[i];
-    db.findOne(
-      {
-        $where: function() {
-          if (movie.year !== undefined) {
-            return this.title.replace(':', '').replace(/'/, '').replace(/ - /, ' ').replace(/-/, ' ').toLowerCase().includes(movie.name[0].replace(/'/, '').trim().toLowerCase()) && this.year === movie.year.trim();
-          } else {
-            return this.title.replace(':', '').replace(/'/, '').replace(/ - /, ' ').replace(/-/, ' ').toLowerCase().includes(movie.name[0].replace(/'/, '').trim().toLowerCase());
-          }
-        }
-      }, async (err, result) => {
-        moviesArray[i] = {...movie,...result};
-        pLooped++;
-        checkPromise(pLooped, len, this, moviesArray);
-      });
-  }
-}
-
-async function checkPromise(looped, size, ctx, array) {
-  ctx.setState({
-    mappedFilesOrg: array,
-    mappedFiles: array,
-    fetchedPercent: (looped/size)*100
-  });
-  if (looped === size) {
-    ctx.setState({
-      isDataLoading: false
-    });
-  }
-}
-
-async function firstLoop(items, ctx) {
-  for (let i = 0, len = items.length; i < len; i++) {
-    const x = items[i];
-    const ext = x.substr(x.length - 3);
-    const nameObj = fileNameCorrector(x, ext);
-    items[i]= {
-      name: nameObj,
-      path: x,
-      ext: ext,
-      year: nameObj[1],
-      resolution: x.match(/\d{3,4}p/) !== null && x.match(/\d{3,4}p/) !== undefined ? x.match(/\d{3,4}p/)[0] : '',
-      cast: [], genres: [], rating: '', director: ''
-    };
-  }
-  ctx.setState({
-    mappedFilesOrg: items,
-    mappedFiles: items,
-    isLoading: false
-  });
-}
-
-function fileNameCorrector(string, ext) {
-  const stringObj = string.split('\\');
-
-  const fileName = stringObj[stringObj.length - 1];
-
-  return fileName
-    .replace(`.${ext}`, '')
-    .replace(/([a-z])([A-Z])/g, '$1 $2')
-    .replace(/\(/gi, '')
-    .replace(/\)/gi, '')
-    .replace(/\[/gi, '')
-    .replace(/]/gi, '')
-    .replace(/\./g, ' ')
-    .replace(/_/gi, ' ')
-    .replace(/-/gi, ' ')
-    .split(/(?=([0-9]{4})+)/)
-    .slice(0, 2);
 }

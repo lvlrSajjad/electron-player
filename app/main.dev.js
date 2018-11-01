@@ -69,7 +69,8 @@ app.on('ready', async () => {
     transparent:true,
     hasShadow: true,
     webPreferences: {
-      experimentalFeatures: true
+      experimentalFeatures: true,
+      nodeIntegrationInWorker: true
     }
   });
 
