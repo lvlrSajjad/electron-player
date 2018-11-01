@@ -34,6 +34,7 @@ export default class Home extends Component<Props> {
       haveDefaultFolder: false,
       isLoading: false,
       isDataLoading: false,
+      showSortModal: false,
       fetchedPercent: 0,
       searchTerm: '',
       currentInfo: {
@@ -110,6 +111,9 @@ export default class Home extends Component<Props> {
                        fetchData={() => {
                          this.fetchData();
                        }}
+                       sortDialog={() => {
+                         this.setState({ showSortModal: true });
+                       }}
                        fetchedPercent={this.state.fetchedPercent}
                        files={this.state.mappedFilesOrg}/>
           }
@@ -167,15 +171,69 @@ export default class Home extends Component<Props> {
         }
 
         {this.state.isLoading &&
-        <div style={{ alignItems: 'center', justifyContent: 'center' }} onClick={() => props.closeModal()}
+        <div style={{ alignItems: 'center', justifyContent: 'center' }}
              className='blurredOverlay'>
           <ReactLoading type='cylon'/>
         </div>
         }
+        {this.state.showSortModal &&
+        <div style={{
+          alignItems: 'center', justifyContent: 'center', display: 'flex', flexDirection: 'column'
+        }}
+             onClick={() => this.setState({ showSortModal: false })} className='blurredOverlay'>
+          <ul style={{ width: 400 }}>
+            <li style={{ alignItems: 'center', justifyContent: 'center', textAlign: 'left', display: 'flex' }}>
+              <a style={{ flex: 1 }} onClick={() => {this.sortArray('rate')}}> By Rating </a>
+              <i className="fa fa-star fa-1x no-drag"/>
+            </li>
+            <li style={{ alignItems: 'center', justifyContent: 'center', textAlign: 'left', display: 'flex' }}>
+              <a style={{ flex: 1 }} onClick={() => {this.sortArray('name')}}> By Name </a>
+              <i className="fa fa-language fa-1x no-drag"/>
+            </li>
+            <li style={{ alignItems: 'center', justifyContent: 'center', textAlign: 'left', display: 'flex' }}>
 
+              <a style={{ flex: 1 }} onClick={() => {this.sortArray('year')}}>By Year</a>
+              <i className="fa fa-calendar fa-1x no-drag"/>
+            </li>
+
+          </ul>
+        </div>
+        }
         <div id="snackbar">{this.state.message}</div>
 
       </div>
     );
   }
+
+  sortArray = (param) => {
+    let unsortedArray = this.state.mappedFiles;
+    if (param === 'name') {
+      unsortedArray.sort((a, b) => {
+        const nameA = a.name.toString().toUpperCase(); // ignore upper and lowercase
+        const nameB = b.name.toString().toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+      });
+
+    } else if (param === 'rate') {
+      unsortedArray.sort((a, b) => {
+          const rateA = parseFloat(a.rating); // ignore upper and lowercase
+          const rateB = parseFloat(b.rating); // ignore upper and lowercase
+          return rateB - rateA;
+
+      });
+
+    } else if (param === 'year') {
+      unsortedArray.sort((a, b) => {
+        const yearA = parseInt(a.year); // ignore upper and lowercase
+        const yearB = parseInt(b.year); // ignore upper and lowercase
+        return yearB - yearA;
+      });
+    }
+    this.setState({mappedFiles:unsortedArray})
+  };
 }

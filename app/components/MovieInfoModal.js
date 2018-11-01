@@ -1,5 +1,5 @@
 import React from 'react';
-//https://subf2m.co/subtitles/get-out
+
 export default function MovieInfo(props) {
   return   <div style={{alignItems:'center',justifyContent:'center'}} onClick={()=>props.closeModal()} className='blurredOverlay'>
     <div style={{width:300, margin:32}}>
@@ -27,30 +27,24 @@ export default function MovieInfo(props) {
         </li>
         <li className='infoRow'>
           <b className='infoHeader'>Genre</b>
-
           <b className='infoData'>
             {props.genre}
           </b>
         </li>
         <li className='infoRow'>
           <b className='infoHeader'>Director</b>
-
           <b className='infoData'>
             {props.director}
           </b>
         </li>
         <li className='infoRow'>
           <b className='infoHeader'>Actors</b>
-
           <b className='infoData'>{props.actors}</b>
         </li>
         <li className='infoRow'>
           <b className='infoHeader'>IMDB</b>
-
           <b className='infoData'>{props.imdbRating}</b>
-
           <b className='infoHeader'>Meta</b>
-
           <b className='infoData'>{props.metascore}</b>
         </li>
         <li className='infoRow'>
