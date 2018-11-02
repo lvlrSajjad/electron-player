@@ -57,7 +57,7 @@ class Toolbar extends Component {
         </a>
         {this.props.status.toString().length > 0 &&
         <MaterialIcon
-          icon='folder-open'
+          icon='folder'
           color='white'
           size={24}
         />
