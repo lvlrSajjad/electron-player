@@ -15,7 +15,7 @@ export default function DragDropView() {
     marginBottom: 86,
     backgroundColor: 'rgba(32,32,32,0.2)'
   }}>
-    <text style={{
+    <text className='unselectable' style={{
       textAlign: 'center',
       fontStyle: 'regular',
       fontSize: 32,

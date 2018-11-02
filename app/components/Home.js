@@ -118,6 +118,7 @@ export default class Home extends Component<Props> {
           }}
           status={this.state.currentDirectoryName}
           onRefresh={this.refresh}
+          currentVideo={this.state.currentVideo}
           isDataLoading={this.state.isDataLoading}
         />
 

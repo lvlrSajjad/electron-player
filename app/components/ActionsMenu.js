@@ -1,10 +1,9 @@
 import React from 'react';
 import SearchForm from './SearchForm';
-import ReactLoading from 'react-loading';
 
 export default function ActionsMenu(props) {
   return <div style={{ textAlign: 'right', width: 300, marginRight: 32 }}>
-    <h2>Electron</h2>
+    <h2 className='unselectable'>Electron</h2>
     {props.files.length > 0 &&
     <SearchForm
       onInput={props.onSearchInput}

@@ -133,11 +133,8 @@ export function playFile(file) {
 
 export function refresh() {
   this.setState({
-    filesOrg: [],
-    files: [],
-    currentDirectoryPath: '',
     currentVideo: '',
-    currentDirectoryName: '',
+    currentSub: '',
     currentInfo: {
       Title: '',
       Director: '',
@@ -145,7 +142,6 @@ export function refresh() {
       Genre: '',
       Actors: ''
     },
-    searchTerm: ''
   });
 }
 
