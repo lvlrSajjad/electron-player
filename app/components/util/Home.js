@@ -190,6 +190,9 @@ export function search(text) {
           file.genres.join(' ').toLowerCase() +
           file.cast.join(' ').toLowerCase() +
           file.director.toLowerCase() +
+          file.encoder.toLowerCase()+
+          file.coding.toLowerCase()+
+          file.type.toLowerCase()+
           file.rating.toLowerCase();
         return searchRes.indexOf(text.toLowerCase()) >= 0;
       }

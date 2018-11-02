@@ -38,7 +38,7 @@ export default class Home extends Component<Props> {
       haveDefaultFolder: false,
       isLoading: false,
       showSortModal: false,
-      isDataLoading:true,
+      isDataLoading:false,
       fetchedPercent: 0,
       searchTerm: '',
       currentInfo: {

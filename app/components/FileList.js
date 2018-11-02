@@ -6,6 +6,7 @@ export default function FileList(props) {
   const listItems = props.mappedFiles.map((file) => {
       const videoExts = ['mp4', 'mkv'];
       if (videoExts.includes(file.ext)) {
+        console.log(file);
         return <li key={file.path} style={{ textAlign: 'left', margin: 8 }}>
           <div style={{
             display: 'flex',
@@ -43,10 +44,21 @@ export default function FileList(props) {
               <a style={{ color: '#fafafa', flex: 1, fontSize: 16, marginLeft: 4 }} onClick={() => {
                 props.onGenreClick(file.year.toString());
               }}>{file.year}</a>
-              <b style={{ color: '#fafafa', fontSize: 12 }}>Rating: </b>
+              {file.type.trim().length > 0 &&
               <a style={{ color: '#fafafa', fontSize: 12, margin: 4, marginRight: 16 }} onClick={() => {
-                props.onGenreClick(file.rating);
-              }}>{file.rating}</a>
+                props.onGenreClick(file.type);
+              }}>{file.type}</a>
+              }
+              {file.encoder.trim().length > 0 &&
+              <a style={{ color: '#fafafa', fontSize: 12, margin: 4, marginRight: 16 }} onClick={() => {
+                props.onGenreClick(file.encoder);
+              }}>{file.encoder}</a>
+              }
+              {file.coding.trim().length > 0 &&
+              <a style={{ color: '#fafafa', fontSize: 12, margin: 4, marginRight: 16 }} onClick={() => {
+                props.onGenreClick(file.coding);
+              }}>{file.coding}</a>
+              }
               {file.resolution.trim().length > 0 &&
               <a style={{ color: '#fafafa', fontSize: 12, margin: 4, marginRight: 16 }} onClick={() => {
                 props.onGenreClick(file.resolution);
@@ -72,36 +84,66 @@ export default function FileList(props) {
                 marginTop: 8,
                 marginBottom: 4
               }}>
-                <b style={{ color: '#fafafa', fontSize: 12,marginRight:4 }}>Genre: </b>
-
-                <a style={{ color: '#fafafa', fontSize: 12, margin: 4, marginRight: 16 }} onClick={() => {
-                  props.onGenreClick(file.genres[0]);
-                }}>{file.genres[0]}</a>
-                <a style={{ color: '#fafafa', fontSize: 12, margin: 4, marginRight: 16 }} onClick={() => {
-                  props.onGenreClick(file.genres[1]);
-                }}>{file.genres[1]}</a>
-                <b style={{ color: '#fafafa', fontSize: 12,marginRight:4 }}>Director: </b>
-
-                <a style={{ color: '#fafafa', fontSize: 12, margin: 4, marginRight: 16 }} onClick={() => {
-                  props.onGenreClick(file.director);
-                }}>{file.director}</a>
-
-                <b style={{ color: '#fafafa', fontSize: 12,marginRight:4 }}>Stars: </b>
-
-                <a style={{ color: '#fafafa', fontSize: 12, margin: 4, marginRight: 16 }} onClick={() => {
-                  props.onGenreClick(file.cast[0]);
-                }}>{file.cast[0]}</a>
-                <a style={{ color: '#fafafa', fontSize: 12, margin: 4, marginRight: 16 }} onClick={() => {
-                  props.onGenreClick(file.cast[1]);
-                }}>{file.cast[1]}</a>
-                <a style={{ color: '#fafafa', fontSize: 12, margin: 4, marginRight: 16 }} onClick={() => {
-                  props.onGenreClick(file.cast[2]);
-                }}>{file.cast[2]}</a>
-                <a style={{ color: '#fafafa', fontSize: 12, margin: 4, marginRight: 16 }} onClick={() => {
-                  props.onGenreClick(file.cast[3]);
-                }}>{file.cast[3]}</a>
+                <b style={{ color: '#fafafa', fontSize: 12 }}>Rating: </b>
+                <a style={{ color: '#fafafa', fontSize: 12, margin: 4, marginRight: 8 }} onClick={() => {
+                  props.onGenreClick(file.rating);
+                }}>{file.rating}</a>
               </div>
+            <div style={{
+              fontSize: 12,
+              display: 'flex',
+              width: '100%',
+              flexDirection: 'row',
+              alignSelf: 'right',
+              alignItems: 'center',
+              justifyContent: 'left',
+              marginTop: 8,
+              marginBottom: 4
+            }}>
+              <b style={{ color: '#fafafa', fontSize: 12,marginRight:4 }}>Genre: </b>
 
+              <a style={{ color: '#fafafa', fontSize: 12, margin: 4, marginRight: 8 }} onClick={() => {
+                props.onGenreClick(file.genres[0]);
+              }}>{file.genres[0]}</a>
+              <a style={{ color: '#fafafa', fontSize: 12, margin: 4, marginRight: 16 }} onClick={() => {
+                props.onGenreClick(file.genres[1]);
+              }}>{file.genres[1]}</a>
+
+            </div>
+            <div style={{
+              fontSize: 12,
+              display: 'flex',
+              width: '100%',
+              flexDirection: 'row',
+              alignSelf: 'right',
+              alignItems: 'center',
+              justifyContent: 'left',
+              marginTop: 8,
+              marginBottom: 4
+            }}>
+
+              <b style={{ color: '#fafafa', fontSize: 12,marginRight:4 }}>Director: </b>
+
+              <a style={{ color: '#fafafa', fontSize: 12, margin: 4, marginRight: 16 }} onClick={() => {
+                props.onGenreClick(file.director);
+              }}>{file.director}</a>
+
+              <b style={{ color: '#fafafa', fontSize: 12,marginRight:4 }}>Stars: </b>
+
+              <a style={{ color: '#fafafa', fontSize: 12, margin: 4, marginRight: 8 }} onClick={() => {
+                props.onGenreClick(file.cast[0]);
+              }}>{file.cast[0]}</a>
+              <a style={{ color: '#fafafa', fontSize: 12, margin: 4, marginRight: 8 }} onClick={() => {
+                props.onGenreClick(file.cast[1]);
+              }}>{file.cast[1]}</a>
+              <a style={{ color: '#fafafa', fontSize: 12, margin: 4, marginRight: 8 }} onClick={() => {
+                props.onGenreClick(file.cast[2]);
+              }}>{file.cast[2]}</a>
+              <a style={{ color: '#fafafa', fontSize: 12, margin: 4, marginRight: 16 }} onClick={() => {
+                props.onGenreClick(file.cast[3]);
+              }}>{file.cast[3]}</a>
+
+            </div>
           </div>
         </li>;
       }
